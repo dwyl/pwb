@@ -10,9 +10,9 @@ function parseurl(request) {
     method  : request.method, // pass on request method
     headers : request.headers // pass headers through
   };
-// remove the leading forward slash from url. borrowed this one-liner from:
-// http://stackoverflow.com/questions/2992276/replace-first-character-of-string
-  var url = url.indexOf('/') == 0 ? url.substring(1) : url;
+  // remove the leading forward slash from url ... explanation of one-liner:
+  // stackoverflow.com/questions/2992276/replace-first-character-of-string
+  url = url.indexOf('/') == 0 ? url.substring(1) : url;
   // is target secure or insecure?
   if(url.indexOf('https') > -1) {
     o.port = 443;
@@ -31,32 +31,30 @@ function parseurl(request) {
     o.host = url;
     o.path = '/';
   }
-  // over-write request.headers.host with correct host
+  // over-write request.headers.host to correct host avoids http://git.io/vJ0oF
   o.headers.host = o.host;
   return o;
 }
 
 function proxyHandler(request,response) {
     var proxy;
-    console.log(' - - - - - - - - - - - - - - - - - - - - - - - - - - - - OPTIONS');
     var options = parseurl(request);
-    console.log(options)
-    console.log(' - - - - - - - - - - - - - - - - - - - - - - - ');
+    // console.log(' - - - - - - - - - - - - - - - - - - - - - - - - OPTIONS');
+    // console.log(options)
+    // console.log(' - - - - - - - - - - - - - - - - - - - - - - - - - - - - ');
     if(options.port === 443) {
       proxy = https;
     }
     else {
       proxy = http;
     }
-    // console.log(proxy.request.toString());s
     var preq = proxy.request(options, function(pres) {
-      // console.log(this);
       pres.setEncoding('utf8');
-      console.log(pres.statusCode);
-      console.log(pres.headers);
+      // console.log(pres.statusCode);
+      // console.log(pres.headers);
       response.writeHead(pres.statusCode, pres.headers);
       pres.on('data', function (chunk) {
-        console.log(chunk);
+        // console.log(chunk);
         response.write(chunk)
       }).on('end', function () {
         response.end();
@@ -70,12 +68,16 @@ function proxyHandler(request,response) {
       response.end();
     });
 
-    preq.end();
+    preq.end(); // end request to target url
 }
 
 http.createServer(function(request, response) {
+  
   if(request.url.length > 1) {
-    proxyHandler(request,response)
+    proxyHandler(request, response);
+  }
+  else {
+
   }
 }).listen(port);
 

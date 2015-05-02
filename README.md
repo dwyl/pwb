@@ -43,14 +43,26 @@ pages and scripts from different domains for ***testing purposes***!)
 and decided to split the functionality out
 into a separate module *in case* anyone else had a similar requirement.
 
-### Security
+### Security [![Dependency Status](https://david-dm.org/dwyl/pwb.svg)](https://david-dm.org/dwyl/pwb)
 
 #### Clarity/Simplicity
 
 ***Clear/Simple code*** is ***always*** a ***requirement*** in crafting any
 code, more so in an application that hopes to *avoid* security issues.
-Despite the availability of We have have built this using "***only core node.js modules***"
-so its easy for *anyone* (*with basic node experience*) to read our code.
+
+#### Zero Dependencies
+
+Despite the availability of [**node-http-proxy**](https://github.com/nodejitsu/node-http-proxy) (by our
+  friends [@nodejitsu](https://github.com/nodejitsu) we have *deliberately*
+  built this using "***only core node.js modules***"
+so its easy for *anyone* (*with basic node experience*) to read
+(*and thus **extend***) our code.
+
+## Contributing
+
+### Development [![devDependency Status](https://david-dm.org/dwyl/pwb/dev-status.svg)](https://david-dm.org/dwyl/pwb#info=devDependencies)
+
+> list dev deps
 
 
 ## Research
