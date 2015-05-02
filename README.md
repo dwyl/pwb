@@ -63,3 +63,6 @@ so its easy for *anyone* (*with basic node experience*) to read our code.
 http://en.wikipedia.org/wiki/Content_Security_Policy
 + Using a proxy server for privacy and security:
 http://www.techrepublic.com/blog/it-security/the-basics-of-using-a-proxy-server-for-privacy-and-security/
+
+### Videos
++ 301 Redirect: https://www.youtube.com/watch?v=r1lVPrYoBkA

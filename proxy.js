@@ -4,52 +4,79 @@ var http = require('http');
 var https = require('https');
 
 // how do we pass a url from the client to the proxy server?
-function parseurl(url){
-
+function parseurl(request) {
+  var url = request.url;
+  var o = { // the options we are going to pass in to our http.request
+    method  : request.method, // pass on request method
+    headers : request.headers // pass headers through
+  };
+// remove the leading forward slash from url. borrowed this one-liner from:
+// http://stackoverflow.com/questions/2992276/replace-first-character-of-string
+  var url = url.indexOf('/') == 0 ? url.substring(1) : url;
+  // is target secure or insecure?
+  if(url.indexOf('https') > -1) {
+    o.port = 443;
+  }
+  // remove protocol from the path
+  if(url.indexOf('://') > -1) {
+    url = url.split('://')[1];
+  }
+  // now separate the host from the path
+  if(url.indexOf('/') > -1) {
+    var u = url.split('/')
+    o.host = u[0];       // everything before the first forward slash
+    o.path = '/' + u[1]; // everyting after the first foward slash
+  }
+  else {
+    o.host = url;
+    o.path = '/';
+  }
+  // over-write request.headers.host with correct host
+  o.headers.host = o.host;
+  return o;
 }
 
-// is it secure or insecure?
-
-// what is the host
-
-// remove request.headers.host 
-
-
-http.createServer(function(request, response) {
-  // var proxy = http.createClient(80, request.headers['host'])
-  console.log(' - - - - - - - - - - - - - - - - - - - METHOD');
-  console.log(request.method);
-  console.log(' - - - - - - - - - - - - - - - - - - - URL');
-  console.log(request.url);
-  console.log(' - - - - - - - - - - - - - - - - - - - HEADERS');
-  console.log(request.headers);
-  console.log(' - - - - - - - - - - - - - - - - - - - - - - - ');
-var options = {
-      host: process.env.ES_HOST,
-      port: process.env.ES_PORT,
-      path: '/' + record.index + '/' + record.type + '/' + record.id,
-      method: method,
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    };
-
-  var proxy_request = http.request(request.method, request.url, request.headers);
-  proxy_request.addListener('response', function (proxy_response) {
-    proxy_response.addListener('data', function(chunk) {
-      response.write(chunk, 'binary');
+function proxyHandler(request,response) {
+    var proxy;
+    console.log(' - - - - - - - - - - - - - - - - - - - - - - - - - - - - OPTIONS');
+    var options = parseurl(request);
+    console.log(options)
+    console.log(' - - - - - - - - - - - - - - - - - - - - - - - ');
+    if(options.port === 443) {
+      proxy = https;
+    }
+    else {
+      proxy = http;
+    }
+    // console.log(proxy.request.toString());s
+    var preq = proxy.request(options, function(pres) {
+      // console.log(this);
+      pres.setEncoding('utf8');
+      console.log(pres.statusCode);
+      console.log(pres.headers);
+      response.writeHead(pres.statusCode, pres.headers);
+      pres.on('data', function (chunk) {
+        console.log(chunk);
+        response.write(chunk)
+      }).on('end', function () {
+        response.end();
+      });
     });
-    proxy_response.addListener('end', function() {
+
+    preq.on('error', function(e) {
+      console.log('>> Problem with http request: ' + e.message);
+      // callback(e);
+      response.write(e.message);
       response.end();
     });
-    response.writeHead(proxy_response.statusCode, proxy_response.headers);
-  });
-  request.addListener('data', function(chunk) {
-    proxy_request.write(chunk, 'binary');
-  });
-  request.addListener('end', function() {
-    proxy_request.end();
-  });
+
+    preq.end();
+}
+
+http.createServer(function(request, response) {
+  if(request.url.length > 1) {
+    proxyHandler(request,response)
+  }
 }).listen(port);
 
 console.log('Now Visit: http://' + ip + ':' +port);
