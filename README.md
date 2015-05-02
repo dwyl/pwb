@@ -6,8 +6,8 @@ pwb (proxy web browser) is a lightweight node.js app to proxy a website.
 
 While testing our web application(s) we ~~are~~ were unable to
 run [***arbitrary code***](http://en.wikipedia.org/wiki/Arbitrary_code_execution)
-to execute tests against the "target" web page.  
-This is a ***security feature*** called [***same-origin policy***](http://en.wikipedia.org/wiki/Same-origin_policy) of *all* browsers and in 99.99% of cases we *want* our browsers to ***protect*** us from ***bad people*** who want to make our browsers do harmful things! While testing, *however*, we ***want*** to be able to run ["***penetration tests***"](http://en.wikipedia.org/wiki/Penetration_test) to
+to execute tests against the "target" web page.
+This is a ***security feature*** called [***same-origin policy***](http://en.wikipedia.org/wiki/Same-origin_policy) of *all* browsers and in 99.99% of cases we *want* our web browser to ***protect*** us from ***bad people*** who want to make our browsers do harmful things! While testing, *however*, we ***want*** to be able to run ["***penetration tests***"](http://en.wikipedia.org/wiki/Penetration_test) to
 get some insight into how our project(s) would handle being attacked!
 
 
@@ -26,7 +26,10 @@ If you are new to the concept of a proxy:
 If proxies still confuse you, watch "***What is a Proxy Server?***": https://www.youtube.com/watch?v=qU0PVSJCKcs
 
 
-## How? > MVP
+## How?
+
+
+
 
 
 ## Notes
@@ -54,7 +57,7 @@ so its easy for *anyone* (*with basic node experience*) to read our code.
 
 ### General Background Reading
 
-+ Proxy Server wiki article: http://en.wikipedia.org/wiki/Proxy_server
++ Proxy Server (general): http://en.wikipedia.org/wiki/Proxy_server
 + Cross-origin resource sharing (CORS): http://en.wikipedia.org/wiki/Cross-origin_resource_sharing
 + Content Security Policy (CSP):
 http://en.wikipedia.org/wiki/Content_Security_Policy

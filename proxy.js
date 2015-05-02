@@ -1,28 +1,55 @@
-var Hapi    = require('hapi');
 var port    = process.env.PORT || 8080; // heroku define port or use 1337 1000
-var server  = new Hapi.Server();
 var ip      = require('./lib/lanip');
+var http = require('http');
+var https = require('https');
 
-server.connection({ host : '0.0.0.0', port: port, routes: { cors: true } });
+// how do we pass a url from the client to the proxy server?
+function parseurl(url){
 
-server.route({
-    method: '*',
-    path: '/{path*}',
-    handler: {
-    proxy: {
-      mapUri:  function (request, callback) {
-        console.log(' - - - - - - - - - - - - - - - - - - - - - - request.url')
-        console.log(request.headers)
-        console.log(' - - - - - - - - - - - - - - - - - - - - - - - - - - - -')
-        // borrowed this one-liner from: http://stackoverflow.com/questions/2992276/replace-first-character-of-string
-        var url = request.url.href.indexOf('/') == 0 ? request.url.href.substring(1) : request.url.href;
-        console.log(">> "+url)
-        console.log(' - - - - - - - - - - - - - - - - - - - - - - - - - - - -')
-        callback(null,url, request.headers);
-        }
+}
+
+// is it secure or insecure?
+
+// what is the host
+
+// remove request.headers.host 
+
+
+http.createServer(function(request, response) {
+  // var proxy = http.createClient(80, request.headers['host'])
+  console.log(' - - - - - - - - - - - - - - - - - - - METHOD');
+  console.log(request.method);
+  console.log(' - - - - - - - - - - - - - - - - - - - URL');
+  console.log(request.url);
+  console.log(' - - - - - - - - - - - - - - - - - - - HEADERS');
+  console.log(request.headers);
+  console.log(' - - - - - - - - - - - - - - - - - - - - - - - ');
+var options = {
+      host: process.env.ES_HOST,
+      port: process.env.ES_PORT,
+      path: '/' + record.index + '/' + record.type + '/' + record.id,
+      method: method,
+      headers: {
+        'Content-Type': 'application/json'
       }
-    }
-});
+    };
 
-server.start();
+  var proxy_request = http.request(request.method, request.url, request.headers);
+  proxy_request.addListener('response', function (proxy_response) {
+    proxy_response.addListener('data', function(chunk) {
+      response.write(chunk, 'binary');
+    });
+    proxy_response.addListener('end', function() {
+      response.end();
+    });
+    response.writeHead(proxy_response.statusCode, proxy_response.headers);
+  });
+  request.addListener('data', function(chunk) {
+    proxy_request.write(chunk, 'binary');
+  });
+  request.addListener('end', function() {
+    proxy_request.end();
+  });
+}).listen(port);
+
 console.log('Now Visit: http://' + ip + ':' +port);
