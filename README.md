@@ -4,7 +4,7 @@ pwb (proxy web browser) is a lightweight node.js app to proxy a website.
 
 ## Why?
 
-While testing our web application(s) we ~~are~~ were unable to
+While testing our web application(s) we ~~are~~ *were* unable to
 run [***arbitrary code***](http://en.wikipedia.org/wiki/Arbitrary_code_execution)
 to execute tests against the "target" web page.
 This is a ***security feature*** called [***same-origin policy***](http://en.wikipedia.org/wiki/Same-origin_policy) of *all* browsers and in 99.99% of cases we *want* our web browser to ***protect*** us from ***bad people*** who want to make our browsers do harmful things! While testing, *however*, we ***want*** to be able to run ["***penetration tests***"](http://en.wikipedia.org/wiki/Penetration_test) to
@@ -53,12 +53,12 @@ code, more so in an application that hopes to *avoid* security issues.
 #### Zero Dependencies
 
 Despite the availability of [**node-http-proxy**](https://github.com/nodejitsu/node-http-proxy) (by our
-  friends [@nodejitsu](https://github.com/nodejitsu) we have *deliberately*
+  friends [@nodejitsu](https://github.com/nodejitsu) ) we have *deliberately*
   built this using "***only core node.js modules***"
 so its easy for *anyone* (*with basic node experience*) to read
-(*and thus **extend***) our code.
+(*and thus* ***extend***) our code.
 
-## Contributing
+## Contributing [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/pwb/issues)
 
 ### Development [![devDependency Status](https://david-dm.org/dwyl/pwb/dev-status.svg)](https://david-dm.org/dwyl/pwb#info=devDependencies)
 

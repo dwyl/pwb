@@ -24,5 +24,8 @@
   "bugs": {
     "url": "https://github.com/dwyl/pwb/issues"
   },
-  "homepage": "https://github.com/dwyl/pwb"
+  "homepage": "https://github.com/dwyl/pwb",
+  "engines": {
+    "node": ">=0.10"
+  }
 }
