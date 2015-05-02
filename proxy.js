@@ -14,8 +14,6 @@ server.route({
         console.log(' - - - - - - - - - - - - - - - - - - - - - - request.url')
         console.log(request.headers)
         console.log(' - - - - - - - - - - - - - - - - - - - - - - - - - - - -')
-
-        // console.log(callback.toString());
         // borrowed this one-liner from: http://stackoverflow.com/questions/2992276/replace-first-character-of-string
         var url = request.url.href.indexOf('/') == 0 ? request.url.href.substring(1) : request.url.href;
         console.log(">> "+url)
